@@ -7,7 +7,7 @@ def matrix_rotation(matrix, r):
     n = len(matrix[0])
 
     def rotate(i, j):
-        if i >= m-i or j >= n-j:
+        if i >= m - i or j >= n - j:
             return
         right = [(i, y) for y in range(j, n-j)]
         down = [(x, n-j-1) for x in range(i+1, m-i)]
@@ -42,7 +42,6 @@ if __name__ == '__main__':
         matrix.append(list(map(int, input().rstrip().split())))
 
     matrix_rotation(matrix, r)
-
 
 '''
 4 4 2

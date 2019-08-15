@@ -57,6 +57,53 @@ class TreeUtils:
             level_order_traversal.pop()
         return level_order_traversal
 
+    @staticmethod
+    def in_order_traversal(node: TreeNode):
+        if not (node.left is None):
+            yield from TreeUtils.in_order_traversal(node.left)
+        yield node.val
+        if not (node.right is None):
+            yield from TreeUtils.in_order_traversal(node.right)
+
+    @staticmethod
+    def is_valid_bst(root: TreeNode) -> bool:
+        if root is None:
+            return True
+        prev, *traversal = TreeUtils.in_order_traversal(root)
+        for i in traversal:
+            if prev >= i:
+                return False
+            else:
+                prev = i
+        return True
+
+    @staticmethod
+    def is_symmetric(root: TreeNode) -> bool:
+        if root is None:
+            return True
+
+        def right_in_order_traversal(node: TreeNode, x: int, y: int):
+            if not (node.right is None):
+                yield from right_in_order_traversal(node.right, x + 1, y + 1)
+            yield node.val, x, y
+            if not (node.left is None):
+                yield from right_in_order_traversal(node.left, x - 1, y + 1)
+
+        def in_order_traversal(node: TreeNode, x: int, y: int):
+            if not (node.left is None):
+                yield from in_order_traversal(node.left, x - 1, y + 1)
+            yield node.val, x, y
+            if not (node.right is None):
+                yield from in_order_traversal(node.right, x + 1, y + 1)
+
+        for right_first, left_first in zip(right_in_order_traversal(root, 0, 0), in_order_traversal(root, 0, 0)):
+            if None in [right_first, left_first]:
+                return False
+            r_val, r_x, r_y = right_first
+            l_val, l_x, l_y = left_first
+            if r_val != l_val or r_x != -l_x or r_y != l_y:
+                return False
+        return True
 
 class Solution(object):
     def max_depth(self, root):
@@ -79,3 +126,19 @@ class SolutionTest(unittest.TestCase):
         level_order_traversal: List[int] = [5, 1, 4, None, None, 3, 6]
         root: TreeNode = TreeUtils.construct_tree(level_order_traversal.copy())
         self.assertEqual(level_order_traversal, TreeUtils.bfs(root))
+
+    def test_inorder_tree(self):
+        level_order_traversal: List[int] = [2, 1, 3, 1, 1]
+        inorder: List[int] = [1, 1, 1, 2, 3]
+        root: TreeNode = TreeUtils.construct_tree(level_order_traversal.copy())
+        self.assertEqual(inorder, list(TreeUtils.in_order_traversal(root)))
+
+    def test_valid_bst(self):
+        level_order_traversal: List[int] = [1, 1]
+        level_order_traversal_2: List[int] = [5, 1, 4, None, None, 3, 6]
+
+        root: TreeNode = TreeUtils.construct_tree(level_order_traversal.copy())
+        root2: TreeNode = TreeUtils.construct_tree(level_order_traversal_2.copy())
+
+        self.assertTrue(TreeUtils.is_valid_bst(root))
+        self.assertFalse(TreeUtils.is_valid_bst(root2))

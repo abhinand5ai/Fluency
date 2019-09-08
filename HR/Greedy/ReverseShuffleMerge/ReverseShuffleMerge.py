@@ -5,24 +5,20 @@ import os
 import random
 import re
 import sys
+from collections import defaultdict
 
 
-def list_group_by(l):
-    l_dict = {}
-    for item in set(l):
-        item_count = l_dict.get(item, 0)
-        item_count += 1
-        l_dict[item] = item_count
-    return l_dict
+def list_group_by(ls):
+    fq = defaultdict(int)
+    for w in ls:
+        fq[w] += 1
+    return fq
 
 
 # Complete the reverseShuffleMerge function below.
 def reverseShuffleMerge(s):
     l_dict = list_group_by(s)
-    shuffled_string = ""
-    for item in l_dict:
-        shuffled_string += item * (l_dict[item] / 2)
-    pass
+
 
 
 if __name__ == '__main__':

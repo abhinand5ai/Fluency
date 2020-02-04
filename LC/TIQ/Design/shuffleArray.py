@@ -1,44 +1,31 @@
 from typing import List
 from random import randrange
 
-import unittest
-
 
 class Solution:
 
     def __init__(self, nums: List[int]):
-        self.nums = nums
+        self.array: List[int] = nums
 
     def reset(self) -> List[int]:
         """
         Resets the array to its original configuration and return it.
         """
-        return self.nums.copy()
+        return self.array.copy()
 
     def shuffle(self) -> List[int]:
         """
         Returns a random shuffling of the array.
         """
-        num_copy = self.nums.copy()
+        n = len(self.array)
+        shuffled_array = self.array.copy()
+        for i in range(n):
+            swap_index = randrange(i, n)
+            shuffled_array[i], shuffled_array[swap_index] = shuffled_array[swap_index], shuffled_array[i]
 
-        for i in range(len(num_copy)):
-            num_copy[i], num_copy[randrange(i, len(num_copy))] = \
-                num_copy[randrange(i, len(num_copy))], num_copy[i]
-        return num_copy
-
+        return shuffled_array
 
 # Your Solution object will be instantiated and called as such:
 # obj = Solution(nums)
 # param_1 = obj.reset()
 # param_2 = obj.shuffle()
-
-class MyTestCase(unittest.TestCase):
-
-    def test_something(self):
-        prices: List[int] = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
-        sol = Solution(prices)
-        print(sol.shuffle())
-
-
-if __name__ == '__main__':
-    unittest.main()

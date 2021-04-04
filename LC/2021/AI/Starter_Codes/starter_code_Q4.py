@@ -13,25 +13,11 @@ grid = grid.tolist()
 
 # Is it possible to place a queen into x, y ?
 # Output : return True #if and only if every check clears after checking row column and diagonals
-def possible(grid, x, y):
-    queens = getQueens(grid)
-    return isPossible(queens, x, y)
-
-
 def isPossible(queens, x, y):
     for i, j in queens:
         if i == x or y == j or abs(x - i) == abs(y - j):
             return False
     return True
-
-
-def getQueens(grid):
-    queens = []
-    for i, row in grid:
-        for j, val in row:
-            if val == 1:
-                queens.append((i, j))
-    return queens
 
 
 # Place 8 queens into grid. Go through each square

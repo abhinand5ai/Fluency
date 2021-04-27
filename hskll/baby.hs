@@ -246,3 +246,8 @@ nums = [8,6,4,1,7,3,5]
 numsTree = foldr treeInsert EmptyTree nums
 
 val sameLight = Red ~~ Red
+
+-- Functors
+appendJust = fmap (++ " Sai") (Just "Abhinand")
+
+fmapTree = fmap (*4) (foldr treeInsert EmptyTree [5,7,3])

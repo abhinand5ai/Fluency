@@ -123,7 +123,7 @@ def getFlowGraph(table, team):
 
 if __name__ == '__main__':
     table = {}
-    with open("matches.txt") as file:
+    with open("matches3.txt") as file:
         for i, line in enumerate(file):
             team, wins, losses, gamesLeft, *schedule = line.split()
             table[i] = (team, int(wins), int(losses), int(gamesLeft), list(map(int, schedule)))

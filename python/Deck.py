@@ -1,12 +1,15 @@
 import collections
+
 Card = collections.namedtuple('Card', ['rank', 'suit'])
+
+
 class FrenchDeck:
     ranks = [str(n) for n in range(2, 11)] + list('JQKA')
     suits = 'spades diamonds clubs hearts'.split()
 
     def __init__(self):
         self._cards = [Card(rank, suit) for suit in self.suits
-                                        for rank in self.ranks]
+                       for rank in self.ranks]
 
     def __len__(self):
         return len(self._cards)
@@ -15,8 +18,7 @@ class FrenchDeck:
         return self._cards[position]
 
 
-
-beer_card = Card('7','diamonds')
+beer_card = Card('7', 'diamonds')
 
 deck = FrenchDeck()
 
@@ -29,7 +31,7 @@ choice(deck)
 for card in deck:
     print(card)
 
-#get aces
+# get aces
 
 deck[12::13]
 
@@ -37,8 +39,7 @@ Card('Q', 'hearts') in deck
 
 suit_values = dict(spades=3, hearts=2, diamonds=1, clubs=0)
 
-def spades_high(card):
+
+def spades_high(card: Card):
     rank_value = FrenchDeck.ranks.index(card.rank)
     return rank_value * len(suit_values) + suit_values[card.suit]
-
-

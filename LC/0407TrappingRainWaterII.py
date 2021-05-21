@@ -46,11 +46,14 @@ class Solution:
             return heightMap[x][y]
 
         pq = [(height(GROUND), GROUND)]
+        water = 0
+        level = 0
         while pq:
             h, curr = heapq.heappop(pq)
             if isKnown(curr):
                 continue
             setKnown(curr)
+            water += max(0, h - height(curr))
             setElevation(curr, h)
             for ne in neighbors(curr):
                 if isKnown(ne):
@@ -60,10 +63,6 @@ class Solution:
                 if currElevation > relaxedElevation:
                     setElevation(ne, relaxedElevation)
                 heapq.heappush(pq, (getElevation(ne), ne))
-        water = 0
-        for i in range(m):
-            for j in range(n):
-                water += max(0, getElevation((i, j)) - height((i, j)))
         return water
 
 

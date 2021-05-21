@@ -6,9 +6,32 @@ class Solution:
     def trapRainWater(self, heightMap: list[list[int]]):
         m = len(heightMap)
         n = len(heightMap[0]) if m != 0 else 0
-        maxH = max(map(max, heightMap))
+        GROUND = (m, 0)
+        border = [(x, n - 1) for x in range(m)] + [(x, 0) for x in range(m)] + \
+                 [(m - 1, y) for y in range(n)] + [(0, y) for y in range(n)]
+        minMaxElevationInAPathTo = [100000] * (m * n + 1)
+        known = [False] * (m * n + 1)
 
-        def neighbors(x, y):
+        def isKnown(loc):
+            x, y = loc
+            return known[x * n + y]
+
+        def setKnown(loc):
+            x, y = loc
+            known[x * n + y] = True
+
+        def getElevation(loc):
+            x, y = loc
+            return minMaxElevationInAPathTo[x * n + y]
+
+        def setElevation(loc, elevation):
+            x, y = loc
+            minMaxElevationInAPathTo[x * n + y] = elevation
+
+        def neighbors(loc):
+            if loc == GROUND:
+                return border
+            x, y = loc
             dx_dy = [(1, 0), (-1, 0), (0, 1), (0, -1)]
             moves = [(x + dx, y + dy) for dx, dy in dx_dy]
 
@@ -16,43 +39,32 @@ class Solution:
 
             return [(a, b) for a, b in moves if isValid(a, b)]
 
-        def singleSourceShortestElevationPath(i, j):
-            pathWithMinMaxElevation = defaultdict(lambda: maxH)
-            qu = [(heightMap[i][j], i, j)]
-            known = set()
-            while qu:
-                e, x, y = heapq.heappop(qu)
-                known.add((x, y))
-                pathWithMinMaxElevation[(x, y)] = e
-                ns = neighbors(x, y)
-                for nx, ny in ns:
-                    if (nx, ny) in known:
-                        continue
-                    updatedMaxElevation = max(pathWithMinMaxElevation[x, y], heightMap[nx][ny])
-                    if updatedMaxElevation < pathWithMinMaxElevation[(nx, ny)]:
-                        pathWithMinMaxElevation[(nx, ny)] = updatedMaxElevation
-                    heapq.heappush(qu, (pathWithMinMaxElevation[(nx, ny)], nx, ny))
-            return pathWithMinMaxElevation
+        def height(loc):
+            if loc == GROUND:
+                return 0
+            x, y = loc
+            return heightMap[x][y]
 
-        border = [(x, n - 1) for x in range(m)] \
-                 + [(x, 0) for x in range(m)] \
-                 + [(m - 1, y) for y in range(n)] \
-                 + [(0, y) for y in range(n)]
-        water = [[0 for _ in range(n)] for _ in range(m)]
-        for i in range(1, m - 1):
-            for j in range(1, n - 1):
-                dst = singleSourceShortestElevationPath(i, j)
-                minElevationToABorder = min([dst[b] for b in border])
-                water[i][j] = max(0, minElevationToABorder - heightMap[i][j])
-        # printListOfLists(heightMap)
-        # print("-" * 10)
-        # printListOfLists(water)
-        return sum(map(sum, water))
-
-
-def printListOfLists(listOfList: list[list]):
-    rep = "\n".join([" ".join(map(str, lst)) for lst in listOfList])
-    print(rep)
+        pq = [(height(GROUND), GROUND)]
+        while pq:
+            h, curr = heapq.heappop(pq)
+            if isKnown(curr):
+                continue
+            setKnown(curr)
+            setElevation(curr, h)
+            for ne in neighbors(curr):
+                if isKnown(ne):
+                    continue
+                currElevation = getElevation(ne)
+                relaxedElevation = max(getElevation(curr), height(ne))
+                if currElevation > relaxedElevation:
+                    setElevation(ne, relaxedElevation)
+                heapq.heappush(pq, (getElevation(ne), ne))
+        water = 0
+        for i in range(m):
+            for j in range(n):
+                water += max(0, getElevation((i, j)) - height((i, j)))
+        return water
 
 
 def main():

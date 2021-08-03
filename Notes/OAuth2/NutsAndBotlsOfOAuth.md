@@ -388,3 +388,4 @@ curl -k https://dev-45411978.okta.com/oauth2/default/v1/introspect \
   "uid": "00urkvenezW6lh7FJ5d6"
 }
 ```
+Scopes

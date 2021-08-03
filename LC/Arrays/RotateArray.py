@@ -1,4 +1,4 @@
-class Roatation:
+class Rotation:
     def rotate(self, nums: list[int], k: int) -> None:
         n = len(nums)
         k = k % n
@@ -16,7 +16,7 @@ class Roatation:
 
 
 def main():
-    rot = Roatation()
+    rot = Rotation()
     l = [1, 2, 3, 4, 5, 6, 7]
     rot.rotate(l, 3)
     print(l)

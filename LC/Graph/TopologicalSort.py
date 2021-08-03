@@ -1,12 +1,15 @@
 from collections import defaultdict
+
+
 class Solution:
-    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+    def canFinish(self, numCourses: int, prerequisites: list[list[int]]) -> bool:
         directedGraph = defaultdict(lambda: set())
-        color = [-1]*(numCourses)
+        color = [-1] * (numCourses)
         for preRequisite in prerequisites:
-            curr,prev = preRequisite
+            curr, prev = preRequisite
             directedGraph[prev].add(curr)
         visited = [0]
+
         def isDfsCycle(curr: int):
             if color[curr] == 0:
                 return False
@@ -20,10 +23,5 @@ class Solution:
             visited[0] += 1
             # print(curr)
             return False
-     
-        return not(any(map(isDfsCycle, range(numCourses)))) and visited[0] == numCourses
 
-        
-
-        
-        
+        return not (any(map(isDfsCycle, range(numCourses)))) and visited[0] == numCourses

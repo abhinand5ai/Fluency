@@ -62,14 +62,14 @@ class Solution:
                 relaxedElevation = max(getElevation(curr), height(ne))
                 if currElevation > relaxedElevation:
                     setElevation(ne, relaxedElevation)
-                heapq.heappush(pq, (getElevation(ne), ne))
+                    heapq.heappush(pq, (getElevation(ne), ne))
         return water
 
 
 def main():
     sol = Solution()
-    water = sol.trapRainWater([[1, 4, 3, 1, 3, 2], [3, 2, 1, 3, 2, 4], [2, 3, 3, 2, 3, 1]])
-    print(water)
+    # water = sol.trapRainWater([[1, 4, 3, 1, 3, 2], [3, 2, 1, 3, 2, 4], [2, 3, 3, 2, 3, 1]])
+    # print(water)
     water = sol.trapRainWater([[3, 3, 3, 3, 3], [3, 2, 2, 2, 3], [3, 2, 1, 2, 3], [3, 2, 2, 2, 3], [3, 3, 3, 3, 3]])
     print(water)
 

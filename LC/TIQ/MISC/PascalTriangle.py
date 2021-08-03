@@ -7,9 +7,7 @@ class PascalTriangle:
         triangle = [[] for i in range(num_rows)]
         triangle[0] = [1]
         for i in range(1, num_rows):
-            triangle[i] = [triangle[i - 1][j] + triangle[i - 1][j - 1] for j in range(1, i)]
-            triangle[i].append(1)
-            triangle[i].insert(0, 1)
+            triangle[i] = [1] + [triangle[i - 1][j] + triangle[i - 1][j - 1] for j in range(1, i)] + [1]
         return triangle
 
 

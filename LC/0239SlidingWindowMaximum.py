@@ -1,15 +1,23 @@
 from collections import deque
-
-class MonotonicQueue:
-    def __init__(self) -> None:
-        self.queue = deque()
-
+import enum
 
 
 class Solution:
-    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+    def maxSlidingWindow(self, nums: list[int], k: int) -> list[int]:
         qu = deque()
-        for i in range(k):
-            if qu and qu[-1] > 
+        res = []
+        for i, v in enumerate(nums):
+            while qu and v > nums[qu[-1]]:
+                qu.pop()
+            qu.append(i)
+            while qu[0] <= i - k:
+                qu.popleft()
+            res.append(nums[qu[0]])
+        
+        return res[k:]
+        
+        
+
+
 
     

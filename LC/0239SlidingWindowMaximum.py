@@ -1,5 +1,4 @@
 from collections import deque
-import enum
 
 
 class Solution:
@@ -13,11 +12,5 @@ class Solution:
             while qu[0] <= i - k:
                 qu.popleft()
             res.append(nums[qu[0]])
-        
-        return res[k:]
-        
-        
 
-
-
-    
+        return res[k - 1:]

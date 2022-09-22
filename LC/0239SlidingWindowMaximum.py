@@ -3,8 +3,9 @@ from collections import deque
 class MonotonicQueue:
     def __init__(self) -> None:
         self.queue = deque()
-    
-    def psuh
+
+
+
 class Solution:
     def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
         qu = deque()

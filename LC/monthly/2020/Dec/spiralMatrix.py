@@ -1,9 +1,11 @@
 class Solution:
-    def generateMatrix(self, n:int) -> List[List[int]]:
+    def generateMatrix(self, n:int) -> list[list[int]]:
         matrix = [[0]*n for _ in range(n)]
 
         def genPerimeter(i:int, j:int, n:int) -> int:
-            right = [(i + 0 , j + x) for x in range(n)] down = [(i + x , j + n - 1) for x in range(1,n)] left = [ (i + n - 1 , j + x) for x in reversed(range(n - 1)) ]
+            right = [(i + 0 , j + x) for x in range(n)] 
+            down = [(i + x , j + n - 1) for x in range(1,n)] 
+            left = [ (i + n - 1 , j + x) for x in reversed(range(n - 1)) ]
             up = [ (i + x , j + 0) for x in reversed(range(1,n - 1)) ]
             return right + down + left + up
 

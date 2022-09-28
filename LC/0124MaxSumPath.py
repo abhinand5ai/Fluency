@@ -15,10 +15,11 @@ class Solution:
     def maxPathSum(self, root: Optional[TreeNode]) -> int:
         def maxPath(node: Optional[TreeNode]):
             if node is None:
-                return 0
+                return float('-inf'), float('-inf')
             mxUL, mxPL = maxPath(node.left)
             mxUR, mxPR = maxPath(node.right)
-            maxUp = max(node.val + max(mxUL, mxUL), node.val)
-            maxP = max(mxPL, mxPR, node.val + mxUL + mxUR, maxUp)
+            maxUp = node.val + max(mxUL, mxUR, 0)
+            maxP = max(mxPL, mxPR, node.val +
+                       max(0, mxUL) + max(mxUR, 0), maxUp)
             return maxUp, maxP
         return maxPath(root)[1]

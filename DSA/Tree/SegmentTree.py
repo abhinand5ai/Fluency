@@ -1,47 +1,80 @@
-from typing import List
+class SNode:
+    def __init__(self, start, end, left, right, range_val):
+        self.start = start
+        self.end = end
+        self.left = left
+        self.right = right
+        self.range_val = range_val
 
 
 class SegmentTree:
-    def __init__(self, val: List):
-        self.val = val
-        self.segment = [None] * (4 * len(val))
-        self.build()
+    def __init__(self, arr, op):
+        self.arr = arr
+        self.op = op
+        self.tree = self.build_segment_tree()
 
-    def build(self):
-        def build(start: int, end: int, i: int):
-            print(start, end, i)
+    def build_segment_tree(self):
+        arr = self.arr
+        op = self.op
+
+        def build(start, end):
             if start == end:
-                self.segment[i] = self.val[start]
-                return self.segment[i]
-
-            middle = (start + end) // 2
-            c1 = build(start, middle, 2 * i)
-            c2 = build(middle + 1, end, 2 * i + 1)
-            self.segment[i] = c1 + c2
-            return self.segment[i]
-
-        build(0, len(self.val) - 1, 1)
-
-    def update(self, index, newVal):
-        def update(node, start, end, i):
-            if start == end:
-                self.segment[i] = newVal
-                return self.segment[i]
-
-    def query(self, start, end):
-        def query(sStart, sEnd, start, end, i):
-            if sStart == start and sEnd == end:
-                return self.segment[i]
-
-            sMid = (sStart + sEnd) // 2
-            if end < sMid:
-                return query(sStart, sMid, start, end, 2 * i)
-            if start > sMid:
-                return query(sMid + 1, sEnd, start, end, 2 * i + 1)
+                return SNode(start, end, None, None, arr[start])
             else:
-                return query(sStart, sMid, start, sMid, 2 * i) + query(sMid + 1, sEnd, sMid + 1, end, 2 * i + 1)
+                mid = (start + end) // 2
+                left = build(start, mid)
+                right = build(mid + 1, end)
+                range_val = op(left.range_val, right.range_val)
+                return SNode(start, end, left, right, range_val)
+
+        return build(0, len(arr) - 1)
+
+    def get_range(self, s=None, e=None):
+        def range_op(node, start=None, end=None):
+            start = start if not None else node.start
+            end = end if not None else node.end
+            if start == node.start and end == node.end:
+                return node.range_val
+            elif end < node.right.start:
+                return range_op(node.left, start, end)
+            elif start > node.left.end:
+                return range_op(node.right, start, end)
+            else:
+                l_range = range_op(node.left, start, node.left.end)
+                r_range = range_op(node.right, node.right.start, end)
+                return self.op(l_range, r_range)
+
+        return range_op(self.tree, s, e)
+
+    def update(self, i, v):
+        op = self.op
+
+        def update(node):
+            if node.start == node.end == i:
+                self.arr[i] = v
+                node.range_val = v
+            elif i < node.right.start:
+                left = update(node.left)
+                node.range_val = op(left.range_val, node.right.range_val)
+
+            else:
+                right = update(node.right)
+                node.range_val = op(node.left.range_val, right.range_val)
+
+            return node
+
+        update(self.tree)
 
 
-segment = SegmentTree([1, 3, 5, 7, 9, 11])
+def main():
+    arr = [1, 3, 5]
+    segment_tree = SegmentTree(arr, lambda x, y: x + y)
+    v = segment_tree.get_range(0, 2)
+    print(v)
+    segment_tree.update(1, 2)
+    v = segment_tree.get_range(0, 2)
+    print(v)
 
-print(segment.segment)
+
+if __name__ == "__main__":
+    main()

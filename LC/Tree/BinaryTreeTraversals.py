@@ -64,11 +64,17 @@ class Traversals:
 
     def postorderStack(node: TreeNode) -> List[TreeNode]:
         traversal = []
-        stk = [node]
+        stk = [(node, 0)]
         while stk:
-            curr = stk.pop()
+            curr, dr = stk.pop()
             if curr is None:
-                pass
-            #TODO
-
+                continue
+            if dr == 0:
+                stk.append((curr, 1))
+                stk.append((curr.left, 0))
+            elif dr == 1:
+                stk.append((curr, 2))
+                stk.append((curr.right, 0))
+            elif dr == 2:
+                traversal.append(curr.val)
         return traversal

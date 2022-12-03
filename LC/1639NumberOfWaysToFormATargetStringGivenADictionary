@@ -1,0 +1,26 @@
+from functools import cache
+
+
+class Solution:
+    def numWays(self, words: list[str], target: str) -> int:
+        words.sort(key=len, reverse=True)
+        max_k = max(map(len, words))
+        # print(max_k)
+        freq = [[0] * 26 for _ in range(max_k)]
+        for w in words:
+            for k, c in enumerate(w):
+                freq[k][ord(c) - ord('a')] += 1
+
+
+
+        @cache
+        def count(k, i):
+            # print(k, i)
+            if i == len(target):
+                return 1
+            if k == max_k:
+                return 0
+            choices = freq[k][ord(target[i]) - ord('a')]
+            return (choices * count(k + 1, i + 1) + count(k + 1, i)) % 1_000_000_007
+
+        return count(0, 0)

@@ -19,21 +19,15 @@ class Solution:
         t = valueDiff + 1
         window = {}
         for i, num in enumerate(nums):
-            if i - k - 1 >= 0 :
+            if i - k - 1 >= 0:
                 del window[nums[i - k - 1] // t]
             bucket = num // t
             if bucket in window:
                 return True
             elif bucket - 1 in window and num - window[bucket - 1] <= valueDiff:
                 return True
-            elif bucket + 1 in window and window[bucket  + 1] - num <= valueDiff:
+            elif bucket + 1 in window and window[bucket + 1] - num <= valueDiff:
                 return True
             else:
                 window[bucket] = num
         return False
-            
-
-
-        
-        
-          

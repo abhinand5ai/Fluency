@@ -11,8 +11,6 @@ class Solution:
             for k, c in enumerate(w):
                 freq[k][ord(c) - ord('a')] += 1
 
-
-
         @cache
         def count(k, i):
             # print(k, i)

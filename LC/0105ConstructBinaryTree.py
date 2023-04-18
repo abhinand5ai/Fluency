@@ -9,26 +9,29 @@ class TreeNode:
         return f"TreeNode({self.val}, {self.left}, {self.right})"
 
 
+
 class Solution:
     def buildTree(self, preorder: list[int], inorder: list[int]) -> TreeNode:
-        pIndex = [0]
-
-        def build(start, end):
-            if start > end:
+        val_index = {}
+        for i, v in enumerate(inorder):
+            val_index[v] = i
+        def buildTree(in_s, in_e, p_i):
+            if in_e < in_s:
                 return None
-            if start == end:
-                tree = TreeNode(preorder[pIndex[0]])
-                pIndex[0] += 1
-                return tree
+            if in_s == in_e:
+                return TreeNode(inorder[in_s])
+            val = preorder[p_i]
 
-            nodeLoc = inorder.index(preorder[pIndex[0]])
-            tree = TreeNode(preorder[pIndex[0]])
-            pIndex[0] += 1
-            tree.left = build(start, nodeLoc - 1)
-            tree.right = build(nodeLoc + 1, end)
-            return tree
+            loc = val_index[val]
+            left_sub_size = loc - in_s + 1
+            left = buildTree(in_s, loc - 1, p_i + 1)
+            right = buildTree(loc + 1, in_e, p_i + left_sub_size)
+            return TreeNode(val, left, right)
+        return buildTree(0, len(inorder) - 1, 0)
 
-        return build(0, len(inorder) - 1)
+
+
+
 
 
 def main():

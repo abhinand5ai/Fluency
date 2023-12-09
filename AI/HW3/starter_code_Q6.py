@@ -73,7 +73,7 @@ class FlowGraph:
 
     # Your code here
 
-    # A method to run the Ford-Fulkerson algorithm    
+    # A method to run the Ford-Fulkerson algorithm
     def ford_fulkerson(self):
         while path := self.get_augmenting_path():
             # print("-"*10)
@@ -100,13 +100,16 @@ def getFlowGraph(table, team):
                 continue
             match = "{}vs{}".format(id1, id2)
             edges.append(FlowEdge("source", match, c))
-            edges.append(FlowEdge(match, "winner_{}".format(id1), float('inf')))
-            edges.append(FlowEdge(match, "winner_{}".format(id2), float('inf')))
+            edges.append(
+                FlowEdge(match, "winner_{}".format(id1), float('inf')))
+            edges.append(
+                FlowEdge(match, "winner_{}".format(id2), float('inf')))
     for id in range(num_teams):
         if id == team:
             continue
         _, wins, _, remaining, _ = table[id]
-        edges.append(FlowEdge("winner_{}".format(id), "sink", team_wins + team_remaining - wins))
+        edges.append(FlowEdge("winner_{}".format(id), "sink",
+                     team_wins + team_remaining - wins))
 
     for edge in edges:
         if edge.v not in graph:
@@ -126,7 +129,8 @@ if __name__ == '__main__':
     with open("matches3.txt") as file:
         for i, line in enumerate(file):
             team, wins, losses, gamesLeft, *schedule = line.split()
-            table[i] = (team, int(wins), int(losses), int(gamesLeft), list(map(int, schedule)))
+            table[i] = (team, int(wins), int(losses), int(
+                gamesLeft), list(map(int, schedule)))
 
     curr_wins = [tup[1] for tup in table.values()]
     for i in range(len(table)):

@@ -1,1 +1,7 @@
 .idea/
+.vim/
+.vscode/
+./fleet
+*.o
+*.exe
+```
